@@ -16,7 +16,8 @@
             border: 1px solid #ccc;
         }
     </style>
-    <script src="../integrator/integrator.min.js"></script>
+    <script src="../integrator/integrator.js"></script>
+    <!-- <script src="https://lampersky.github.io/email-builder-js/integrator.min.js"></script> -->
 </head>
 <body>
     <h1>First editor</h1>
@@ -27,7 +28,10 @@
             <button onclick="getHtmlFromIframe('iframe1')">html</button>
             <button onclick="toggleSamples('iframe1')">samples</button>
             <button onclick="toggleInspector('iframe1')">inspector</button>
+            <button onclick="setWatcherEnabled('iframe1', true)">enable</button>
+            <button onclick="setWatcherEnabled('iframe1', false)">disable</button>
         <div>
+        <!-- <iframe id="iframe1" src="https://lampersky.github.io/email-builder-js/" title="First editor"></iframe> -->
         <iframe id="iframe1" src="http://localhost:5174/email-builder-js/" title="First editor"></iframe>
         <div>
             <textarea id="json1"></textarea>
@@ -44,7 +48,8 @@
             <button onclick="toggleSamples('iframe2')">samples</button>
             <button onclick="toggleInspector('iframe2')">inspector</button>
         <div>
-        <iframe id="iframe2" src="http://localhost:5174/email-builder-js/" title="Second editor"></iframe>
+        <iframe id="iframe2" src="https://lampersky.github.io/email-builder-js/" title="Second editor"></iframe>
+        <!-- <iframe id="iframe2" src="http://localhost:5174/email-builder-js/" title="Second editor"></iframe> -->
         <div>
             <textarea id="json2"></textarea>
             <textarea id="html2"></textarea>
@@ -52,6 +57,15 @@
     </div>
     
     <script>
+        function setWatcherEnabled(iframeId, enable) {
+            document.getElementById(iframeId).sendMessage({
+                method: 'setWatcherEnabled',
+                args: [enable]
+            }).then(response => {
+                console.log("Response from child:", response);
+            }).catch(err => console.error(err));
+        }
+        
         function sendMessageToIframe(iframeId, jsonText) {
             document.getElementById(iframeId).sendMessage({
                 method: 'loadTemplate',

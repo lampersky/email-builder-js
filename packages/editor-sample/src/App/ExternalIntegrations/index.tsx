@@ -29,7 +29,7 @@ export default function ExternalIntegrations() {
     });
   }, [document, shouldRunEffect]);
 
-  window.integrator.register('test',(args: [], success: Function, error: Function) => {
+  window.integrator.register('test',(args: Array<any>, success: Function, error: Function) => {
     try {
       const randomValue = Math.random();
       const isSuccess = randomValue > 0.5;
@@ -40,7 +40,16 @@ export default function ExternalIntegrations() {
     }
   });
 
-  window.integrator.register('getHtml',(args: [], success: Function, error: Function) => {
+  window.integrator.register('setWatcherEnabled',(args: Array<any>, success: Function, error: Function) => {
+    try {
+      setShouldRunEffect(args[0]);
+      success();
+    } catch (e) {
+      error(e); 
+    }
+  });
+
+  window.integrator.register('getHtml',(args: Array<any>, success: Function, error: Function) => {
     try {
       success(renderToStaticMarkup(documentRef.current, { rootBlockId: 'root' }));
     } catch {
@@ -48,7 +57,7 @@ export default function ExternalIntegrations() {
     }
   });
 
-  window.integrator.register('getJson',(args: [], success: Function, error: Function) => {
+  window.integrator.register('getJson',(args: Array<any>, success: Function, error: Function) => {
     try {
       success(JSON.stringify(documentRef.current));
     } catch (e) {
@@ -56,12 +65,12 @@ export default function ExternalIntegrations() {
     }
   });
 
-  window.integrator.register('toggleInspector',(args: [], success: Function, error: Function) => {
+  window.integrator.register('toggleInspector',(args: Array<any>, success: Function, error: Function) => {
       toggleInspectorDrawerOpen();
       success();
   });
 
-  window.integrator.register('toggleSamples',(args: [], success: Function, error: Function) => {
+  window.integrator.register('toggleSamples',(args: Array<any>, success: Function, error: Function) => {
     toggleSamplesDrawerOpen();
     success();
   });
