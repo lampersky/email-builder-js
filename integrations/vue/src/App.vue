@@ -13,11 +13,11 @@ import EmailEditor from './components/EmailEditor.vue'
 
   <div>
     <div class="d-flex">
-      <EmailEditor url="http://localhost:5176/email-builder-js/" />
+      <EmailEditor url="https://lampersky.github.io/email-builder-js/" />
     </div>
 
     <div class="d-flex">
-      <EmailEditor url="http://localhost:5176/email-builder-js/" />
+      <EmailEditor url="https://lampersky.github.io/email-builder-js/" />
     </div>
   </div>
 </template>
