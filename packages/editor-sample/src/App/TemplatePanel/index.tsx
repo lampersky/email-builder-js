@@ -20,6 +20,7 @@ import ImportJson from './ImportJson';
 import JsonPanel from './JsonPanel';
 import MainTabsGroup from './MainTabsGroup';
 import ShareButton from './ShareButton';
+import ExternalIntegrations from '../ExternalIntegrations';
 
 export default function TemplatePanel() {
   const document = useDocument();
@@ -89,6 +90,7 @@ export default function TemplatePanel() {
         justifyContent="space-between"
         alignItems="center"
       >
+        <ExternalIntegrations />
         <ToggleSamplesPanelButton />
         <Stack px={2} direction="row" gap={2} width="100%" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={2}>
