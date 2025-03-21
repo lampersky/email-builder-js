@@ -1,7 +1,8 @@
 var integrator = (function() {
     var iframes = [];
+    var functions = {};
     
-    var installMessageRelay = function() {
+    const installMessageRelay = () => {
         window.addEventListener("message", (event) => {
             var iframe = iframes.filter(i => i.contentWindow === event.source)?.at(0);
             if (iframe) {
@@ -12,19 +13,57 @@ var integrator = (function() {
                       detail: variableValue,
                     }));
                 }
-                //if (false) {
-                //    //tho whole object
-                //    iframe.dispatchEvent(new CustomEvent(`watch`, {
-                //      detail: event.data,
-                //    }));
-                //}
+                ////tho whole object
+                //iframe.dispatchEvent(new CustomEvent(`watch`, {
+                //  detail: event.data,
+                //}));
             }
         });
     };
+
+    const call = (name, messageId, args) => {
+        var func = functions[name];
+        if (!func) return;
+        const recipient = /*event.source ??*/ window.parent;
+        const origin = /*(event.origin === 'null' || !event.origin) ? "*" : event.origin */ "*";
+        func(
+            args,
+            (result) => { 
+                //console.log('Success! Result:', result); 
+                recipient.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
+            },
+            (error) => { 
+                //console.log('Error:', error);
+                recipient.postMessage({ id: messageId, response: { success: false, error: error, result: null } }, origin);
+            }
+        );
+    }
     
     installMessageRelay();
  
     return {
+        install: function() {
+            const handleMessage = (event) => {
+                call(event.data?.payload?.method, event.data.id, event.data?.payload?.args);
+              };
+              window.addEventListener("message", handleMessage);
+              return () => {
+                window.removeEventListener("message", handleMessage);
+              };
+        },
+        register: function(name, callback) {
+            functions[name] = callback;
+        },
+        unregister: function(name) {
+            if (functions[name]) {
+                delete functions[name];
+            }
+        },
+        update: function(reactiveVariables) {
+            if (window.parent) {
+                window.parent.postMessage({ action: 'watch', reactiveVariables}, "*");
+            }
+        },
         addIframeById: function(iframeId) {
             var iframe = document.getElementById(iframeId);
             this.addIframe(iframe);
@@ -72,6 +111,9 @@ var integrator = (function() {
         },
         getIframes: function() {
             return iframes;
+        },
+        getFunctions: function() {
+            return Object.keys(functions);
         }
     };
 })();
