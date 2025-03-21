@@ -30,7 +30,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/integrator.min.js"
+              "https://lampersky.github.io/email-builder-js/integrator.min.js"
             ]
           },
           "configurations": {
