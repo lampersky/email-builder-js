@@ -1,0 +1,10 @@
+<div class="iframeWrapper">
+    <iframe #iframeRef width="100%" height="100%" [src]="iframeUrl" (load)="onIframeLoad()"></iframe>
+</div>
+<button (click)="getJsonTemplate()">JSON</button>
+<button (click)="getHtmlTemplate()">HTML</button>
+<button (click)="toggleSamples()">toggle samples</button>
+<button (click)="toggleInspector()">toggle inspector</button>
+<button (click)="loadTemplate(json)">load template</button>
+<textarea [(ngModel)]="json"></textarea>
+<textarea [(ngModel)]="html" readonly></textarea>
