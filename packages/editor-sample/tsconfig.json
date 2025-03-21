@@ -3,7 +3,8 @@
   "compilerOptions": {
     "target": "es2015",
     "module": "esnext",
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": ["ES2020", "DOM"]
   },
   "exclude": ["dist"]
 }

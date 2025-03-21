@@ -22,60 +22,64 @@ export default function ExternalIntegrations() {
     var uri = `data:text/plain,${encodeURIComponent(json)}`;
     const html = renderToStaticMarkup(document, { rootBlockId: 'root' });
 
-    if (window.parent) {
-      window.parent.postMessage({ action: 'watch', reactiveVariables: {
-        uri: uri,
-        html: html,
-        json: json
-      }}, "*");
-    }
+    window.integrator.update({
+      uri,
+      html,
+      json,
+    });
   }, [document, shouldRunEffect]);
 
+  window.integrator.register('test',(args: [], success: Function, error: Function) => {
+    try {
+      const randomValue = Math.random();
+      const isSuccess = randomValue > 0.5;
+      if (!isSuccess) throw 'Something went wrong';
+      success(randomValue);
+    } catch (e) {
+      error(e); 
+    }
+  });
+
+  window.integrator.register('getHtml',(args: [], success: Function, error: Function) => {
+    try {
+      success(renderToStaticMarkup(documentRef.current, { rootBlockId: 'root' }));
+    } catch {
+      error('Something went wrong!'); 
+    }
+  });
+
+  window.integrator.register('getJson',(args: [], success: Function, error: Function) => {
+    try {
+      success(JSON.stringify(documentRef.current));
+    } catch (e) {
+      error('Something went wrong!'); 
+    }
+  });
+
+  window.integrator.register('toggleInspector',(args: [], success: Function, error: Function) => {
+      toggleInspectorDrawerOpen();
+      success();
+  });
+
+  window.integrator.register('toggleSamples',(args: [], success: Function, error: Function) => {
+    toggleSamplesDrawerOpen();
+    success();
+  });
+
+  window.integrator.register('loadTemplate',(args: Array<any>, success: Function, error: Function) => {
+    try {
+      const { error, data } = validateJsonStringValue(args[0]);
+      if (!data) throw error;
+      resetDocument(data);
+      success();
+    } catch (e) {
+      error(e); 
+    }
+  });
+
   useEffect(() => {
-    const handleMessage = (event) => {
-      
-      //if (event.source !== self) return;
-      if (false) {
-        console.log("Received message:", event.data);
-        console.log("Source:", event.source);
-        console.log("self:", self);
-        console.log("RAW:", event);
-      }
-
-      const recipient = event.source ?? window.parent;
-      const origin = (event.origin === 'null' || !event.origin) ? "*" : event.origin;
-
-      if (event.data?.payload?.method === 'resetDocument') {
-        const { error, data } = validateJsonStringValue(event.data?.payload?.args?.at(0));
-        if (!data) {
-          recipient.postMessage({ id: event.data.id, response: { success: false, error: error, result: null } }, origin);
-          return;
-        }
-        resetDocument(data);
-        recipient.postMessage({ id: event.data.id, response: { success: true, error: null, result: null } }, origin);
-      }
-      else if (event.data?.payload?.method === 'getHtml') {
-        const html = renderToStaticMarkup(documentRef.current, { rootBlockId: 'root' });
-        recipient.postMessage({ id: event.data.id, response: html }, origin);
-      }
-      else if (event.data?.payload?.method === 'getJson') {
-        const json = JSON.stringify(documentRef.current);
-        recipient.postMessage({ id: event.data.id, response: json }, origin);
-      }
-      else if (event.data?.payload?.method === 'toggleInspectorDrawerOpen') {
-        toggleInspectorDrawerOpen();
-        recipient.postMessage({ id: event.data.id, response: { success: true, error: null, result: null } }, origin);
-      }
-      else if (event.data?.payload?.method === 'toggleSamplesDrawerOpen') {
-        toggleSamplesDrawerOpen();
-        recipient.postMessage({ id: event.data.id, response: { success: true, error: null, result: null } }, origin);
-      }
-
-    };
-    window.addEventListener("message", handleMessage);
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
+    const uninstall = window.integrator.install();
+    return uninstall;
   }, []);
 
   return (<></>);
