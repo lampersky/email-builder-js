@@ -35,7 +35,7 @@
         </div>
     </div>
     
-    <h1>Second edytor</h1>
+    <h1>Second editor</h1>
     <div style="width: 100%">
         <div>
             <button onclick="sendMessageToIframe('iframe2')">load json</button>
@@ -103,10 +103,10 @@
         const html1 = document.getElementById('html1');
         const json1 = document.getElementById('json1');
         iframe1.addEventListener('watch.json', e => {
-            json1.innerHTML = e.detail;
+            json1.value = e.detail;
         });
         iframe1.addEventListener('watch.html', e => {
-            html1.innerHTML = e.detail;
+            html1.value = e.detail;
         });
         
         
@@ -114,10 +114,10 @@
         const html2 = document.getElementById('html2');
         const json2 = document.getElementById('json2');
         iframe2.addEventListener('watch.json', e => {
-            json2.innerHTML = e.detail;
+            json2.value = e.detail;
         });
         iframe2.addEventListener('watch.html', e => {
-            html2.innerHTML = e.detail;
+            html2.value = e.detail;
         });
     </script>
 </body>
