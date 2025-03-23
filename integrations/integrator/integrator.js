@@ -1,4 +1,7 @@
 var integrator = (function() {
+    if (window.integrator) {
+        return window.integrator;
+    }
     var iframes = [];
     var functions = {};
     
