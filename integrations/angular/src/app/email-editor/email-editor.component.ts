@@ -51,20 +51,20 @@ export class EmailEditorComponent implements AfterViewInit {
     }).catch((err: any) => console.error(err));
   }
   toggleSamples() {
-    return this.iframeRef.nativeElement.sendMessage({ method: 'toggleSamplesDrawerOpen' }).then((response: any) => {
+    return this.iframeRef.nativeElement.sendMessage({ method: 'toggleSamples' }).then((response: any) => {
       console.log("Response from child:", response);
       return response;
     }).catch((err: any) => console.error(err));
   }
   toggleInspector() {
-    return this.iframeRef.nativeElement.sendMessage({ method: 'toggleInspectorDrawerOpen' }).then((response: any) => {
+    return this.iframeRef.nativeElement.sendMessage({ method: 'toggleInspector' }).then((response: any) => {
       console.log("Response from child:", response);
       return response;
     }).catch((err: any) => console.error(err));
   }
   loadTemplate(jsonText: String) {
     return this.iframeRef.nativeElement.sendMessage({
-      method: 'resetDocument',
+      method: 'loadTemplate',
       args: [jsonText]
     }).then((response: any) => {
       console.log("Response from child:", response);
