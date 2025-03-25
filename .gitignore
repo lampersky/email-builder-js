@@ -11,3 +11,10 @@ yarn-debug.log*
 yarn-error.log*
 
 dist
+integrations/
+*.spec.js.map
+*.spec.js
+*.spec.d.ts.map
+*.spec.d.ts
+*.js.map
+*.d.ts.map
