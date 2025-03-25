@@ -9,6 +9,7 @@ import { Html, HtmlPropsSchema } from '@usewaypoint/block-html';
 import { Image, ImagePropsSchema } from '@usewaypoint/block-image';
 import { Spacer, SpacerPropsSchema } from '@usewaypoint/block-spacer';
 import { Text, TextPropsSchema } from '@usewaypoint/block-text';
+import { TextI18N, TextI18NPropsSchema } from '@lampersky/block-texti18n';
 import {
   buildBlockComponent,
   buildBlockConfigurationDictionary,
@@ -114,6 +115,14 @@ const EDITOR_DICTIONARY = buildBlockConfigurationDictionary({
     Component: (props) => (
       <EditorBlockWrapper>
         <Divider {...props} />
+      </EditorBlockWrapper>
+    ),
+  },
+  TextI18N: {
+    schema: TextI18NPropsSchema,
+    Component: (props) => (
+      <EditorBlockWrapper>
+        <TextI18N {...props} />
       </EditorBlockWrapper>
     ),
   },

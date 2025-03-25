@@ -9,7 +9,21 @@
   ],
   "scripts": {
     "build": "npx tsc",
-    "test": "npx jest"
+    "test": "npx jest",
+    "remove": "rm -rf node_modules package-lock.json",
+    "install": "npm i && npm run block-avatar && npm run block-button && npm run block-divider && npm run block-heading && npm run block-html && npm run block-image && npm run block-spacer && npm run block-text && npm run block-texti18n && npm run document-core && npm run editor-sample && npm run email-builder",
+    "block-avatar": "cd ./packages/block-avatar && npm i",
+    "block-button": "cd ./packages/block-button && npm i",
+    "block-divider": "cd ./packages/block-divider && npm i",
+    "block-heading": "cd ./packages/block-heading && npm i",
+    "block-html": "cd ./packages/block-html && npm i",
+    "block-image": "cd ./packages/block-image && npm i",
+    "block-spacer": "cd ./packages/block-spacer && npm i",
+    "block-text": "cd ./packages/block-text && npm i",
+    "block-texti18n": "cd ./packages/block-texti18n && npm i",
+    "document-core": "cd ./packages/document-core && npm i",
+    "editor-sample": "cd ./packages/editor-sample && npm i",
+    "email-builder": "cd ./packages/email-builder && npm i"
   },
   "author": "carlos@usewaypoint.com",
   "license": "MIT",

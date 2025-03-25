@@ -1,0 +1,35 @@
+{
+  "name": "@lampersky/block-texti18n",
+  "version": "0.0.1",
+  "description": "@lampersky/document compatible Text component",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lampersky@gmail.com",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16 || ^17 || ^18",
+    "zod": "^1 || ^2 || ^3"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.2.1",
+    "@types/insane": "^1.0.0"
+  },
+  "dependencies": {
+    "insane": "^2.6.2",
+    "marked": "^12.0.2"
+  }
+}
