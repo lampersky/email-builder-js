@@ -11,3 +11,12 @@ yarn-debug.log*
 yarn-error.log*
 
 dist
+*.spec.js.map
+packages/email-builder/src/renderers/renderToStaticMarkup.spec.js
+*.spec.d.ts.map
+*.spec.d.ts
+*.js.map
+packages/email-builder/src/renderers/renderToStaticMarkup.d.ts.map
+*.d.ts.map
+*.d.ts
+*.js
