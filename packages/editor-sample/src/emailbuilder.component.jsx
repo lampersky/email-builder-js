@@ -11,7 +11,6 @@ class MyWebComponent extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
     const mountPoint = document.createElement("div");
-    //mountPoint.id = 'root';
     shadowRoot.appendChild(mountPoint);
 
     const emotionRoot = document.createElement("style");
