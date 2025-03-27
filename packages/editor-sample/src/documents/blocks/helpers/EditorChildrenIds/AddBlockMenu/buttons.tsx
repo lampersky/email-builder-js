@@ -8,7 +8,9 @@ import {
   HtmlOutlined,
   ImageOutlined,
   LibraryAddOutlined,
+  NotAccessibleOutlined,
   NotesOutlined,
+  NotesRounded,
   SmartButtonOutlined,
   ViewColumnOutlined,
 } from '@mui/icons-material';
@@ -36,11 +38,11 @@ export const BUTTONS: TButtonProps[] = [
   },
   {
     label: 'Text',
-    icon: <NotesOutlined />,
+    icon: <NotAccessibleOutlined />,
     block: () => ({
       type: 'Text',
       data: {
-        props: { text: 'My new text block' },
+        props: { text: 'My new text blocky' },
         style: {
           padding: { top: 16, bottom: 16, left: 24, right: 24 },
           fontWeight: 'normal',
@@ -51,7 +53,7 @@ export const BUTTONS: TButtonProps[] = [
 
   {
     label: 'Test',
-    icon: <NotesOutlined />,
+    icon: <NotesRounded />,
     block: () => ({
       type: 'Test',
       data: {

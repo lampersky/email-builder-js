@@ -29,7 +29,7 @@
     "document-core": "cd ./packages/document-core && npm i",
     "editor-sample": "cd ./packages/editor-sample && npm i",
     "email-builder": "cd ./packages/email-builder && npm i",
-    "myinstall": "npm i && npm run block-avatar && npm run block-button && npm run block-divider && npm run block-heading && npm run block-html && npm run block-image && npm run block-spacer && npm run block-text && npm run block-test && npm run document-core && npm run editor-sample && npm run email-builder",
+    "myinstall": "npm i && npm run block-avatar && npm run block-button && npm run block-divider && npm run block-heading && npm run block-html && npm run block-image && npm run block-spacer && npm run block-text && npm run block-test && npm run block-container && npm run block-columns-container && npm run document-core && npm run editor-sample && npm run email-builder",
     "link-block-avatar": "npm link @usewaypoint/block-avatar",
     "link-block-button": "npm link @usewaypoint/block-button",
     "link-block-divider": "npm link @usewaypoint/block-divider",
@@ -55,7 +55,7 @@
     "tsup-block-columns-container": "cd ./packages/block-columns-container && tsup src/index.tsx --format cjs,esm --dts",
     "tsup-document-core": "cd ./packages/document-core && tsup src/index.ts --format cjs,esm --dts",
     "tsup-email-builder": "cd ./packages/email-builder && tsup src/index.ts --format cjs,esm --dts",
-    "tsup": "npm run tsup-block-avatar && npm run tsup-block-button && npm run tsup-block-divider && npm run tsup-block-heading && npm run tsup-block-html && npm run tsup-block-image && npm run tsup-block-spacer && npm run tsup-block-text && npm run tsup-block-test && npm run tsup-document-core && npm run tsup-email-builder"
+    "tsup": "npm run tsup-block-avatar && npm run tsup-block-button && npm run tsup-block-divider && npm run tsup-block-heading && npm run tsup-block-html && npm run tsup-block-image && npm run tsup-block-spacer && npm run tsup-block-text && npm run tsup-block-test && npm run tsup-block-container && npm run tsup-block-columns-container && npm run tsup-document-core && npm run tsup-email-builder"
   },
   "author": "carlos@usewaypoint.com",
   "license": "MIT",
