@@ -7,7 +7,6 @@ import react from '@vitejs/plugin-react-swc';
 //   base: '/email-builder-js/',
 // });
 
-
 export default defineConfig({
     plugins: [react()],
     build: {
@@ -19,15 +18,16 @@ export default defineConfig({
       },
       rollupOptions: {
         external: [
-          '@emotion/react', '@emotion/styled', '@mui/material', 
-          'react', 'react-dom'],
+          'react', 'react-dom',
+          //'@emotion/react', '@emotion/styled', '@mui/material',
+          ],
         output: {
           globals: {
             react: 'React',
             'react-dom': 'ReactDOM',
-            '@mui/material': 'MaterialUI',
-            '@emotion/react': 'emotionReact',
-            '@emotion/styled': 'emotionStyled',
+            // '@mui/material': 'MaterialUI',
+            // '@emotion/react': 'emotionReact',
+            // '@emotion/styled': 'emotionStyled',
           },
         },
       },

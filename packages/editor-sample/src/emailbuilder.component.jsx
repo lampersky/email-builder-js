@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from './App';
 import theme from './theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
@@ -11,7 +11,7 @@ class MyWebComponent extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
     const mountPoint = document.createElement("div");
-    mountPoint.id = 'root';
+    //mountPoint.id = 'root';
     shadowRoot.appendChild(mountPoint);
 
     const emotionRoot = document.createElement("style");
@@ -23,11 +23,31 @@ class MyWebComponent extends HTMLElement {
       container: shadowRoot,
     });
 
+    const th = createTheme(theme, {
+      components: {
+        MuiPopover: {
+          defaultProps: {
+            container: mountPoint,
+          },
+        },
+        MuiPopper: {
+          defaultProps: {
+            container: mountPoint,
+          },
+        },
+        MuiModal: {
+          defaultProps: {
+            container: mountPoint,
+          },
+        },
+      },
+    });
+
     const root = ReactDOM.createRoot(mountPoint);
     root.render(
       <React.StrictMode>
         <CacheProvider value={shadowCache}>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={th}>
             <CssBaseline />
             <App />
           </ThemeProvider>
