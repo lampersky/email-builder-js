@@ -1,18 +1,7 @@
 {
-  "name": "@usewaypoint/editor-sample",
+  "name": "@usewaypoint/editor-sample-web-component",
   "version": "0.0.1",
-
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
-    }
-  },
-
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,18 +12,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
-    "@usewaypoint/block-avatar": "^0.0.3",
-    "@usewaypoint/block-button": "^0.0.3",
-    "@usewaypoint/block-columns-container": "^0.0.3",
-    "@usewaypoint/block-container": "^0.0.2",
-    "@usewaypoint/block-divider": "^0.0.4",
-    "@usewaypoint/block-heading": "^0.0.3",
-    "@usewaypoint/block-html": "^0.0.3",
-    "@usewaypoint/block-image": "^0.0.5",
-    "@usewaypoint/block-spacer": "^0.0.3",
-    "@usewaypoint/block-text": "^0.0.6",
-    "@usewaypoint/document-core": "^0.0.6",
-    "@usewaypoint/email-builder": "^0.0.8",
+    "@usewaypoint/editor-sample": "^0.0.1",
     "highlight.js": "^11.9.0",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -55,6 +33,6 @@
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",
-    "tsup": ""
+    "tsup": "^8.0.2"
   }
 }
