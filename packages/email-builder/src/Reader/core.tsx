@@ -21,6 +21,7 @@ import { ContainerPropsSchema } from '../blocks/Container/ContainerPropsSchema';
 import ContainerReader from '../blocks/Container/ContainerReader';
 import { EmailLayoutPropsSchema } from '../blocks/EmailLayout/EmailLayoutPropsSchema';
 import EmailLayoutReader from '../blocks/EmailLayout/EmailLayoutReader';
+import { TextI18N, TextI18NPropsSchema } from '@lampersky/block-texti18n';
 
 const ReaderContext = createContext<TReaderDocument>({});
 
@@ -73,6 +74,10 @@ const READER_DICTIONARY = buildBlockConfigurationDictionary({
   Text: {
     schema: TextPropsSchema,
     Component: Text,
+  },
+  TextI18N: {
+    schema: TextI18NPropsSchema,
+    Component: TextI18N,
   },
 });
 

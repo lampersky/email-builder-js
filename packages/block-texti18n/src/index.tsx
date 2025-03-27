@@ -78,6 +78,12 @@ export const TextI18NPropsSchema = z.object({
     .object({
       markdown: z.boolean().optional().nullable(),
       text: z.string().optional().nullable(),
+      translations: z.object({
+        en: z.string().optional().nullable(),
+        es: z.string().optional().nullable(),
+        pt: z.string().optional().nullable(),
+      }),
+      selectedLanguage: z.enum(['en','es','pt'])
     })
     .optional()
     .nullable(),
@@ -87,6 +93,11 @@ export type TextI18NProps = z.infer<typeof TextI18NPropsSchema>;
 
 export const TextI18NPropsDefaults = {
   text: '',
+  translations: {
+    en: '',
+    es: '',
+    pt: '',
+  }
 };
 
 export function TextI18N({ style, props }: TextI18NProps) {

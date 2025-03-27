@@ -20,14 +20,26 @@ export default function TextSidebarPanel({ data, setData }: TextI18NSidebarPanel
       setData(res.data);
       setErrors(null);
     } else {
-      setErrors(res.error);
+      setErrors(res.error as any);
     }
   };
 
   return (
-    <BaseSidebarPanel title="Text block">
+    <BaseSidebarPanel title="Translated text block">
       <TextInput
         label="Content"
+        rows={5}
+        defaultValue={data.props?.text ?? ''}
+        onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}
+      />
+      <TextInput
+        label="Content ES"
+        rows={5}
+        defaultValue={data.props?.text ?? ''}
+        onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}
+      />
+      <TextInput
+        label="Content PT"
         rows={5}
         defaultValue={data.props?.text ?? ''}
         onChange={(text) => updateData({ ...data, props: { ...data.props, text } })}

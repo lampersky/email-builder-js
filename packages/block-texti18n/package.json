@@ -7,16 +7,17 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup src/index.tsx --format cjs,esm --dts"
   },
   "author": "lampersky@gmail.com",
   "license": "MIT",
@@ -26,7 +27,9 @@
   },
   "devDependencies": {
     "@testing-library/react": "^14.2.1",
-    "@types/insane": "^1.0.0"
+    "@types/insane": "^1.0.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "insane": "^2.6.2",

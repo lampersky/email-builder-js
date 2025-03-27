@@ -10,6 +10,7 @@ import {
   LibraryAddOutlined,
   NotesOutlined,
   SmartButtonOutlined,
+  TranslateOutlined,
   ViewColumnOutlined,
 } from '@mui/icons-material';
 
@@ -39,6 +40,20 @@ export const BUTTONS: TButtonProps[] = [
     icon: <NotesOutlined />,
     block: () => ({
       type: 'Text',
+      data: {
+        props: { text: 'My new text block' },
+        style: {
+          padding: { top: 16, bottom: 16, left: 24, right: 24 },
+          fontWeight: 'normal',
+        },
+      },
+    }),
+  },
+  {
+    label: 'Translatable text',
+    icon: <TranslateOutlined />,
+    block: () => ({
+      type: 'TextI18N',
       data: {
         props: { text: 'My new text block' },
         style: {
