@@ -50,6 +50,21 @@ export const BUTTONS: TButtonProps[] = [
   },
 
   {
+    label: 'Test',
+    icon: <NotesOutlined />,
+    block: () => ({
+      type: 'Test',
+      data: {
+        props: { },
+        style: {
+          padding: { top: 16, bottom: 16, left: 24, right: 24 },
+          fontWeight: 'normal',
+        },
+      },
+    }),
+  },
+
+  {
     label: 'Button',
     icon: <SmartButtonOutlined />,
     block: () => ({

@@ -19,12 +19,12 @@ export default function TestSidebarPanel({ data, setData }: TestSidebarPanelProp
       setData(res.data);
       setErrors(null);
     } else {
-      //setErrors(res.error);
+      setErrors(res.error);
     }
   };
 
   return (
-    <BaseSidebarPanel title="Spacer block">
+    <BaseSidebarPanel title="Test block">
       <SliderInput
         label="Height"
         iconLabel={<HeightOutlined sx={{ color: 'text.secondary' }} />}
