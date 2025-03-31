@@ -2,19 +2,30 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from './App';
 import theme from './theme';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, ThemeProvider, Box } from '@mui/material';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import ExternalIntegrations from "./App/ExternalIntegrations";
+import { EditorStateProvider } from "./documents/editor/EditorContext";
+import getConfiguration from "./getConfiguration";
 
 class MyWebComponent extends HTMLElement {
   connectedCallback() {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
-    const mountPoint = document.createElement("div");
-    shadowRoot.appendChild(mountPoint);
+    this.shadowRoot.innerHTML = `
+      <style>
+        *,*::before,*::after{box-sizing:inherit;}
+        #root {
+          box-sizing: border-box;
+        }
+      </style>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+    `;
 
-    const emotionRoot = document.createElement("style");
-    shadowRoot.appendChild(emotionRoot);
+    const mountPoint = document.createElement("div");
+    mountPoint.id = 'root';
+    shadowRoot.appendChild(mountPoint);
 
     const shadowCache = createCache({
       key: 'css',
@@ -39,20 +50,36 @@ class MyWebComponent extends HTMLElement {
             container: mountPoint,
           },
         },
+        MuiDrawer: {
+          styleOverrides: {
+            paper: {
+              position: 'absolute'
+            },
+          }
+        },
       },
     });
 
-    const root = ReactDOM.createRoot(mountPoint);
-    root.render(
+    this.root = ReactDOM.createRoot(mountPoint);
+    this.root.render(
       <React.StrictMode>
         <CacheProvider value={shadowCache}>
           <ThemeProvider theme={th}>
             <CssBaseline />
-            <App />
+            <Box sx={{ position: 'relative' }}>
+              <EditorStateProvider initialConfig={getConfiguration('')}>
+                <ExternalIntegrations element={this}></ExternalIntegrations>
+                <App />
+              </EditorStateProvider>
+            </Box>
           </ThemeProvider>
         </CacheProvider>
       </React.StrictMode>
     );
+  }
+
+  disconnectedCallback() {
+    this.root.unmount();
   }
 }
 

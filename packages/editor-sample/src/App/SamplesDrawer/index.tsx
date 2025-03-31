@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, Divider, Drawer, Link, Stack, Typography } from '@mui/material';
 
-import { useSamplesDrawerOpen } from '../../documents/editor/EditorContext';
+import { useEditorStore, useSamplesDrawerOpen } from '../../documents/editor/EditorContext';
 
 import SidebarButton from './SidebarButton';
 import logo from './waypoint.svg';
@@ -10,7 +10,8 @@ import logo from './waypoint.svg';
 export const SAMPLES_DRAWER_WIDTH = 240;
 
 export default function SamplesDrawer() {
-  const samplesDrawerOpen = useSamplesDrawerOpen();
+  const store = useEditorStore();
+  const samplesDrawerOpen = useSamplesDrawerOpen(store);
 
   return (
     <Drawer

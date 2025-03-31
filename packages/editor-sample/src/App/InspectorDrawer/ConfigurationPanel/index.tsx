@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { TEditorBlock } from '../../../documents/editor/core';
-import { setDocument, useDocument, useSelectedBlockId } from '../../../documents/editor/EditorContext';
+import { setDocument, useDocument, useEditorStore, useSelectedBlockId } from '../../../documents/editor/EditorContext';
 
 import AvatarSidebarPanel from './input-panels/AvatarSidebarPanel';
 import ButtonSidebarPanel from './input-panels/ButtonSidebarPanel';
@@ -26,8 +26,9 @@ function renderMessage(val: string) {
 }
 
 export default function ConfigurationPanel() {
-  const document = useDocument();
-  const selectedBlockId = useSelectedBlockId();
+  const store = useEditorStore();
+  const document = useDocument(store);
+  const selectedBlockId = useSelectedBlockId(store);
 
   if (!selectedBlockId) {
     return renderMessage('Click on a block to inspect.');
@@ -37,7 +38,7 @@ export default function ConfigurationPanel() {
     return renderMessage(`Block with id ${selectedBlockId} was not found. Click on a block to reset.`);
   }
 
-  const setBlock = (conf: TEditorBlock) => setDocument({ [selectedBlockId]: conf });
+  const setBlock = (conf: TEditorBlock) => setDocument(store, { [selectedBlockId]: conf });
   const { data, type } = block;
   switch (type) {
     case 'Avatar':

@@ -3,20 +3,21 @@ import React from 'react';
 import { CodeOutlined, DataObjectOutlined, EditOutlined, PreviewOutlined } from '@mui/icons-material';
 import { Tab, Tabs, Tooltip } from '@mui/material';
 
-import { setSelectedMainTab, useSelectedMainTab } from '../../documents/editor/EditorContext';
+import { setSelectedMainTab, useEditorStore, useSelectedMainTab } from '../../documents/editor/EditorContext';
 
 export default function MainTabsGroup() {
-  const selectedMainTab = useSelectedMainTab();
+  const store = useEditorStore();
+  const selectedMainTab = useSelectedMainTab(store);
   const handleChange = (_: unknown, v: unknown) => {
     switch (v) {
       case 'json':
       case 'preview':
       case 'editor':
       case 'html':
-        setSelectedMainTab(v);
+        setSelectedMainTab(store, v);
         return;
       default:
-        setSelectedMainTab('editor');
+        setSelectedMainTab(store, 'editor');
     }
   };
 

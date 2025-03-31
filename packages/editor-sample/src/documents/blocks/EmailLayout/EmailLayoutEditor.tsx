@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useCurrentBlockId } from '../../editor/EditorBlock';
-import { setDocument, setSelectedBlockId, useDocument } from '../../editor/EditorContext';
+import { setDocument, setSelectedBlockId, useDocument, useEditorStore } from '../../editor/EditorContext';
 import EditorChildrenIds from '../helpers/EditorChildrenIds';
 
 import { EmailLayoutProps } from './EmailLayoutPropsSchema';
@@ -32,13 +32,14 @@ function getFontFamily(fontFamily: EmailLayoutProps['fontFamily']) {
 
 export default function EmailLayoutEditor(props: EmailLayoutProps) {
   const childrenIds = props.childrenIds ?? [];
-  const document = useDocument();
+  const store = useEditorStore();
+  const document = useDocument(store);
   const currentBlockId = useCurrentBlockId();
 
   return (
     <div
       onClick={() => {
-        setSelectedBlockId(null);
+        setSelectedBlockId(store, null);
       }}
       style={{
         backgroundColor: props.backdropColor ?? '#F5F5F5',
@@ -81,7 +82,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
               <EditorChildrenIds
                 childrenIds={childrenIds}
                 onChange={({ block, blockId, childrenIds }) => {
-                  setDocument({
+                  setDocument(store, {
                     [blockId]: block,
                     [currentBlockId]: {
                       type: 'EmailLayout',
@@ -91,7 +92,7 @@ export default function EmailLayoutEditor(props: EmailLayoutProps) {
                       },
                     },
                   });
-                  setSelectedBlockId(blockId);
+                  setSelectedBlockId(store, blockId);
                 }}
               />
             </td>

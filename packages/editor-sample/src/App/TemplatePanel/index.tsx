@@ -8,6 +8,7 @@ import EditorBlock from '../../documents/editor/EditorBlock';
 import {
   setSelectedScreenSize,
   useDocument,
+  useEditorStore,
   useSelectedMainTab,
   useSelectedScreenSize,
 } from '../../documents/editor/EditorContext';
@@ -22,9 +23,10 @@ import MainTabsGroup from './MainTabsGroup';
 import ShareButton from './ShareButton';
 
 export default function TemplatePanel() {
-  const document = useDocument();
-  const selectedMainTab = useSelectedMainTab();
-  const selectedScreenSize = useSelectedScreenSize();
+  const store = useEditorStore();
+  const document = useDocument(store);
+  const selectedMainTab = useSelectedMainTab(store);
+  const selectedScreenSize = useSelectedScreenSize(store);
 
   let mainBoxSx: SxProps = {
     height: '100%',
@@ -44,10 +46,10 @@ export default function TemplatePanel() {
     switch (value) {
       case 'mobile':
       case 'desktop':
-        setSelectedScreenSize(value);
+        setSelectedScreenSize(store, value);
         return;
       default:
-        setSelectedScreenSize('desktop');
+        setSelectedScreenSize(store, 'desktop');
     }
   };
 
