@@ -28,7 +28,6 @@ export default function ExternalIntegrations({ element } : Props) {
     const json = JSON.stringify(document);
     var uri = `data:text/plain,${encodeURIComponent(json)}`;
     const html = renderToStaticMarkup(document, { rootBlockId: 'root' });
-    console.log('ping', element);
     window.integrator.update({
       uri,
       html,
