@@ -6,9 +6,7 @@ type Callback = () => void | Destructor;
 interface Integrator {
   update: (obj: any, element: any) => void;
   register: (todo: any, todo2: any) => void;
-  install: () => Callback;
-
-  installWebComponent: (element: any) => Callback;
+  install: (element: any) => Callback;
 }
   
 declare global {

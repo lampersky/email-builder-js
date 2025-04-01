@@ -1,4 +1,3 @@
-//it works, but lot's of code needs to be cleared, I've only adjusted
 var integrator = (function() {
     if (window.integrator) {
         return window.integrator;
@@ -7,26 +6,7 @@ var integrator = (function() {
     var webComponents = [];
     var functions = {};
     
-    const installMessageRelay = () => {
-        window.addEventListener("message", (event) => {
-            var iframe = iframes.filter(i => i.contentWindow === event.source)?.at(0);
-            if (iframe) {
-                if (event.data.action !== 'watch') return;
-                for (var [variableName, variableValue] of Object.entries(event.data.reactiveVariables))
-                {
-                    iframe.dispatchEvent(new CustomEvent(`watch.${variableName}`, {
-                      detail: variableValue,
-                    }));
-                }
-                ////tho whole object
-                //iframe.dispatchEvent(new CustomEvent(`watch`, {
-                //  detail: event.data,
-                //}));
-            }
-        });
-    };
-
-    const call = (name, messageId, args) => {
+    const call = (name, messageId, args, element) => {
         var func = functions[name];
         if (!func) return;
         const recipient = /*event.source ??*/ window.parent;
@@ -34,65 +14,67 @@ var integrator = (function() {
         func(
             args,
             (result) => { 
-                //console.log('Success! Result:', result); 
-                recipient.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
+                if (element) {
+                    element.dispatchEvent(new CustomEvent(`response.${messageId}`, { 
+                        detail : {
+                            id: messageId, 
+                            response: { success: true, error: null, result: result }
+                        }
+                    }));
+                } else {
+                    recipient.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
+                }
             },
             (error) => { 
-                //console.log('Error:', error);
-                recipient.postMessage({ id: messageId, response: { success: false, error: error, result: null } }, origin);
+                if (element) {
+                    element.dispatchEvent(new CustomEvent(`response.${messageId}`, {
+                        detail : {
+                            id: messageId, 
+                            response: { success: false, error: error, result: null }
+                        }
+                    }))
+                } else {
+                    recipient.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
+                }
             }
         );
     }
 
-    const call2 = (name, messageId, args, element) => {
-        var func = functions[name];
-        if (!func) return;
-        func(
-            args,
-            (result) => { 
-                //console.log('Success! Result:', result); 
-                //element.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
-                element.dispatchEvent(new CustomEvent(`response.${messageId}`, { 
-                    detail : {
-                        id: messageId, 
-                        response: { success: true, error: null, result: result }
-                    }
-                }))
-            },
-            (error) => { 
-                //console.log('Error:', error);
-                //element.postMessage({ id: messageId, response: { success: false, error: error, result: null } }, origin);
-                element.dispatchEvent(new CustomEvent(`response.${messageId}`, {
-                    detail : {
-                        id: messageId, 
-                        response: { success: false, error: error, result: null }
-                    }
-                }))
-            }
-        );
-    }
-
-    //web-componentsolution do not need message relay, it is for iframe
-    //installMessageRelay();
- 
     return {
-        install: function() {
+        /* This method needs to be called inside a WebComponent or inside an iframe. For a WebComponent, provide the element; for an iframe, provide null. */
+        install: function(element) {
+            const type = element ? 'execute' : 'message';
             const handleMessage = (event) => {
-                call(event.data?.payload?.method, event.data.id, event.data?.payload?.args);
+                if (element) {
+                    call(event.detail?.payload?.method, event.detail.id, event.detail?.payload?.args, element);
+                } else {
+                    call(event.data?.payload?.method, event.data.id, event.data?.payload?.args);
+                }
               };
-              window.addEventListener("message", handleMessage);
+              const el = element ?? window;
+              el.addEventListener(type, handleMessage);
               return () => {
-                window.removeEventListener("message", handleMessage);
+                el.removeEventListener(type, handleMessage);
               };
         },
-        installWebComponent: function(element) {
-            const handleMessage = (event) => {
-                call2(event.detail?.payload?.method, event.detail.id, event.detail?.payload?.args, element);
-              };
-              element.addEventListener("execute", handleMessage);
-              return () => {
-                element.removeEventListener("execute", handleMessage);
-              };
+        /* This method needs to be called on a page that is hosting the iframe. */
+        installHostMessageRelay: function() {
+            window.addEventListener("message", (event) => {
+                var iframe = iframes.filter(i => i.contentWindow === event.source)?.at(0);
+                if (iframe) {
+                    if (event.data.action !== 'watch') return;
+                    for (var [variableName, variableValue] of Object.entries(event.data.reactiveVariables))
+                    {
+                        iframe.dispatchEvent(new CustomEvent(`watch.${variableName}`, {
+                          detail: variableValue,
+                        }));
+                    }
+                    ////tho whole object
+                    //iframe.dispatchEvent(new CustomEvent(`watch`, {
+                    //  detail: event.data,
+                    //}));
+                }
+            });
         },
         register: function(name, callback) {
             functions[name] = callback;
@@ -102,6 +84,7 @@ var integrator = (function() {
                 delete functions[name];
             }
         },
+        /* This method should be called when a variable changes inside the WebComponent or iframe, so we can notify the receivers. */
         update: function(reactiveVariables, element) {
             if (element) {
                 for (var [variableName, variableValue] of Object.entries(reactiveVariables))
@@ -146,7 +129,7 @@ var integrator = (function() {
                         }));
 
                         setTimeout(() => {
-                            window.removeEventListener(`response.${messageId}`, messageHandler);
+                            webComponent.removeEventListener(`response.${messageId}`, messageHandler);
                             reject(new Error("Timeout waiting for child response"));
                         }, 5000);
                     });

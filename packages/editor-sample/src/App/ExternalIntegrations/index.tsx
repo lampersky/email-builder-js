@@ -94,7 +94,7 @@ export default function ExternalIntegrations({ element } : Props) {
   });
 
   useEffect(() => {
-    const uninstall = window.integrator.installWebComponent(element);
+    const uninstall = window.integrator.install(element);
     return uninstall;
   }, []);
 

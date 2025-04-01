@@ -6,7 +6,7 @@
   <title>EmailBuilder.js Web Component Demo</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="./integrator.js"></script>
+  <script src="./integrator.min.js"></script>
   <!-- 
   <script src="https://cdn.jsdelivr.net/npm/@emotion/react@11.11.3/dist/emotion-react.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emotion/styled@11.11.0/dist/emotion-styled.umd.min.js"></script>
@@ -33,7 +33,8 @@
   window.integrator.addWebComponent(document.querySelector('#ee2'));
   var json = '{"root":{"type":"EmailLayout","data":{"backdropColor":"#F5F5F5","canvasColor":"#FFFFFF","textColor":"#262626","fontFamily":"MODERN_SANS","childrenIds":["block-1743436431560","block-1743436447693"]}},"block-1743436431560":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}},"block-1743436447693":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}}}';
   document.querySelector('#ee1').sendMessage({method: 'loadTemplate', args: [json]}).then(e => console.log(e));
-  document.querySelector('#ee2').addEventListener('watch.json', e => console.log(e.detail));
+  document.querySelector('#ee1').addEventListener('watch.html', e => console.log('html', e.detail));
+  document.querySelector('#ee2').addEventListener('watch.json', e => console.log('json', e.detail));
 </script>
 
 </body>
