@@ -1,12 +1,6 @@
 import { defineConfig } from 'vite';
-import path from 'path';
 
 import react from '@vitejs/plugin-react-swc';
-
-// export default defineConfig({
-//   plugins: [react()],
-//   base: '/email-builder-js/',
-// });
 
 export default defineConfig({
     plugins: [react()],
@@ -14,22 +8,19 @@ export default defineConfig({
     build: {
       lib: {
         entry: 'src/emailbuilder.component.jsx',
-        name: 'MyWebComponent',
-        fileName: (format) => `my-web-component.${format}.js`,
+        name: 'EmailBuilderJsComponent',
+        fileName: (format) => `email-builder-js-component.${format}.js`,
         formats: ['iife'],
       },
       rollupOptions: {
         external: [
-          'react', 'react-dom',
-          //'@emotion/react', '@emotion/styled', '@mui/material',
+          'react', 
+          'react-dom',
           ],
         output: {
           globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            // '@mui/material': 'MaterialUI',
-            // '@emotion/react': 'emotionReact',
-            // '@emotion/styled': 'emotionStyled',
+            react: 'React', 
+            'react-dom': 'ReactDOM'
           },
         },
       },

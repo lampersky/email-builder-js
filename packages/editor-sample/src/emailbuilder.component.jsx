@@ -9,7 +9,7 @@ import ExternalIntegrations from "./App/ExternalIntegrations";
 import { EditorStateProvider } from "./documents/editor/EditorContext";
 import getConfiguration from "./getConfiguration";
 
-class MyWebComponent extends HTMLElement {
+class EmailBuilderJsComponent extends HTMLElement {
   connectedCallback() {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
@@ -83,4 +83,4 @@ class MyWebComponent extends HTMLElement {
   }
 }
 
-customElements.define("my-web-component", MyWebComponent);
+customElements.define("email-builder-js", EmailBuilderJsComponent);

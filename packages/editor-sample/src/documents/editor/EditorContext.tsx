@@ -31,7 +31,6 @@ export const EditorStateProvider: React.FC<{ initialConfig?: TEditorConfiguratio
   children,
 }) => {
   const store = createEditorStateStore(initialConfig || getConfiguration(''));
-  console.log('store created', store);
   return <EditorStoreContext.Provider value={store}>{children}</EditorStoreContext.Provider>;
 };
 

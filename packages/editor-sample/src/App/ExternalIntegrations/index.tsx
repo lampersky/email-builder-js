@@ -12,8 +12,6 @@ export default function ExternalIntegrations({ element } : Props) {
   const store = useEditorStore();
   const document = useDocument(store);
 
-  console.log(element);
-
   const [shouldRunEffect, setShouldRunEffect] = useState(true);
 
   const documentRef = useRef(document);
