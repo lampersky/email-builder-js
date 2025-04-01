@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useDocument, resetDocument, toggleInspectorDrawerOpen, toggleSamplesDrawerOpen } from '../../documents/editor/EditorContext';
+import { useDocument, resetDocument, toggleInspectorDrawerOpen, toggleSamplesDrawerOpen, useEditorStore } from '../../documents/editor/EditorContext';
 import { renderToStaticMarkup } from '@usewaypoint/email-builder';
 import validateJsonStringValue from '../TemplatePanel/ImportJson/validateJsonStringValue';
 
-export default function ExternalIntegrations() {
-  const document = useDocument();
+type Props = {
+  element: HTMLElement;
+};
+
+export default function ExternalIntegrations({ element } : Props) {
+  const store = useEditorStore();
+  const document = useDocument(store);
+
+  console.log(element);
 
   const [shouldRunEffect, setShouldRunEffect] = useState(true);
 
@@ -21,12 +28,11 @@ export default function ExternalIntegrations() {
     const json = JSON.stringify(document);
     var uri = `data:text/plain,${encodeURIComponent(json)}`;
     const html = renderToStaticMarkup(document, { rootBlockId: 'root' });
-
     window.integrator.update({
       uri,
       html,
       json,
-    });
+    }, element);
   }, [document, shouldRunEffect]);
 
   window.integrator.register('test',(args: Array<any>, success: Function, error: Function) => {
@@ -66,12 +72,12 @@ export default function ExternalIntegrations() {
   });
 
   window.integrator.register('toggleInspector',(args: Array<any>, success: Function, error: Function) => {
-      toggleInspectorDrawerOpen();
+      toggleInspectorDrawerOpen(store);
       success();
   });
 
   window.integrator.register('toggleSamples',(args: Array<any>, success: Function, error: Function) => {
-    toggleSamplesDrawerOpen();
+    toggleSamplesDrawerOpen(store);
     success();
   });
 
@@ -79,7 +85,7 @@ export default function ExternalIntegrations() {
     try {
       const { error, data } = validateJsonStringValue(args[0]);
       if (!data) throw error;
-      resetDocument(data);
+      resetDocument(store, data);
       success();
     } catch (e) {
       error(e); 
@@ -87,7 +93,7 @@ export default function ExternalIntegrations() {
   });
 
   useEffect(() => {
-    const uninstall = window.integrator.install();
+    const uninstall = window.integrator.install(element);
     return uninstall;
   }, []);
 

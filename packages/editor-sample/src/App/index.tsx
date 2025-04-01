@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Stack, useTheme } from '@mui/material';
 
-import { useInspectorDrawerOpen, useSamplesDrawerOpen } from '../documents/editor/EditorContext';
+import { useEditorStore, useInspectorDrawerOpen, useSamplesDrawerOpen } from '../documents/editor/EditorContext';
 
 import InspectorDrawer, { INSPECTOR_DRAWER_WIDTH } from './InspectorDrawer';
 import SamplesDrawer, { SAMPLES_DRAWER_WIDTH } from './SamplesDrawer';
@@ -17,8 +17,9 @@ function useDrawerTransition(cssProperty: 'margin-left' | 'margin-right', open: 
 }
 
 export default function App() {
-  const inspectorDrawerOpen = useInspectorDrawerOpen();
-  const samplesDrawerOpen = useSamplesDrawerOpen();
+  const store = useEditorStore();
+  const inspectorDrawerOpen = useInspectorDrawerOpen(store);
+  const samplesDrawerOpen = useSamplesDrawerOpen(store);
 
   const marginLeftTransition = useDrawerTransition('margin-left', samplesDrawerOpen);
   const marginRightTransition = useDrawerTransition('margin-right', inspectorDrawerOpen);

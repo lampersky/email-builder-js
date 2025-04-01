@@ -3,10 +3,11 @@ import React, { useMemo } from 'react';
 import { FileDownloadOutlined } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 
-import { useDocument } from '../../../documents/editor/EditorContext';
+import { useDocument, useEditorStore } from '../../../documents/editor/EditorContext';
 
 export default function DownloadJson() {
-  const doc = useDocument();
+  const store = useEditorStore();
+  const doc = useDocument(store);
   const href = useMemo(() => {
     return `data:text/plain,${encodeURIComponent(JSON.stringify(doc, null, '  '))}`;
   }, [doc]);

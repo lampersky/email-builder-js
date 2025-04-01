@@ -3,10 +3,10 @@ import React from 'react';
 import { FirstPageOutlined, MenuOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
-import { toggleSamplesDrawerOpen, useSamplesDrawerOpen } from '../../documents/editor/EditorContext';
+import { toggleSamplesDrawerOpen, useEditorStore, useSamplesDrawerOpen } from '../../documents/editor/EditorContext';
 
-function useIcon() {
-  const samplesDrawerOpen = useSamplesDrawerOpen();
+function useIcon(store: ReturnType<typeof useEditorStore>) {
+  const samplesDrawerOpen = useSamplesDrawerOpen(store);
   if (samplesDrawerOpen) {
     return <FirstPageOutlined fontSize="small" />;
   }
@@ -14,6 +14,8 @@ function useIcon() {
 }
 
 export default function ToggleSamplesPanelButton() {
-  const icon = useIcon();
-  return <IconButton onClick={toggleSamplesDrawerOpen}>{icon}</IconButton>;
+  const store = useEditorStore();
+  const icon = useIcon(store);
+  const toggle = () => toggleSamplesDrawerOpen(store);
+  return <IconButton onClick={toggle}>{icon}</IconButton>;
 }

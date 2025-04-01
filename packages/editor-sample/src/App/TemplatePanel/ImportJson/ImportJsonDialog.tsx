@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { resetDocument } from '../../../documents/editor/EditorContext';
+import { resetDocument, useEditorStore } from '../../../documents/editor/EditorContext';
 
 import validateJsonStringValue from './validateJsonStringValue';
 
@@ -20,6 +20,7 @@ type ImportJsonDialogProps = {
   onClose: () => void;
 };
 export default function ImportJsonDialog({ onClose }: ImportJsonDialogProps) {
+  const store = useEditorStore();
   const [value, setValue] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +47,7 @@ export default function ImportJsonDialog({ onClose }: ImportJsonDialogProps) {
           if (!data) {
             return;
           }
-          resetDocument(data);
+          resetDocument(store, data);
           onClose();
         }}
       >

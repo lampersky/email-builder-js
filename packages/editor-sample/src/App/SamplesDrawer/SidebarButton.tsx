@@ -2,12 +2,13 @@ import React from 'react';
 
 import { Button } from '@mui/material';
 
-import { resetDocument } from '../../documents/editor/EditorContext';
+import { resetDocument, useEditorStore } from '../../documents/editor/EditorContext';
 import getConfiguration from '../../getConfiguration';
 
 export default function SidebarButton({ href, children }: { href: string; children: JSX.Element | string }) {
+  const store = useEditorStore();
   const handleClick = () => {
-    resetDocument(getConfiguration(href));
+    resetDocument(store, getConfiguration(href));
   };
   return (
     <Button size="small" href={href} onClick={handleClick}>

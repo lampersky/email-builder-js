@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { setDocument, useDocument } from '../../documents/editor/EditorContext';
+import { setDocument, useDocument, useEditorStore } from '../../documents/editor/EditorContext';
 
 import EmailLayoutSidebarPanel from './ConfigurationPanel/input-panels/EmailLayoutSidebarPanel';
 
 export default function StylesPanel() {
-  const block = useDocument().root;
+  const store = useEditorStore();
+  const block = useDocument(store).root;
   if (!block) {
     return <p>Block not found</p>;
   }
@@ -15,5 +16,5 @@ export default function StylesPanel() {
     throw new Error('Expected "root" element to be of type EmailLayout');
   }
 
-  return <EmailLayoutSidebarPanel key="root" data={data} setData={(data) => setDocument({ root: { type, data } })} />;
+  return <EmailLayoutSidebarPanel key="root" data={data} setData={(data) => setDocument(store, { root: { type, data } })} />;
 }
