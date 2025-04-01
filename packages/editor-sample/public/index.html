@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmailBuilder.js as Web Component</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./integrator.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Demo of EmailBuilder.js Web Component</h1>
+  <my-web-component id="ee1"></my-web-component>
+  <my-web-component id="ee2"></my-web-component>
+
+  <script src="./my-web-component.iife.js"></script>
+
+  <script>
+    window.integrator.addElement(document.querySelector('#ee1'));
+    window.integrator.addElement(document.querySelector('#ee2'));
+    var json = '{"root":{"type":"EmailLayout","data":{"backdropColor":"#F5F5F5","canvasColor":"#FFFFFF","textColor":"#262626","fontFamily":"MODERN_SANS","childrenIds":["block-1743436431560","block-1743436447693"]}},"block-1743436431560":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}},"block-1743436447693":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}}}';
+    document.querySelector('#ee1').call.loadTemplate(json).then(e => console.log(e));
+    document.querySelector('#ee1').addEventListener('watch.html', e => console.log('html', e.detail));
+    document.querySelector('#ee2').addEventListener('watch.json', e => console.log('json', e.detail));
+    document.querySelector('#ee1').call.toggleInspector().then(e => console.log(e));
+    document.querySelector('#ee1').call.toggleSamples().then(e => console.log(e));
+  </script>
+</body>
+</html>

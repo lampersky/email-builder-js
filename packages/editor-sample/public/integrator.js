@@ -9,6 +9,7 @@ var integrator = (function() {
     const call = (name, messageId, args, element) => {
         var func = functions[name];
         if (!func) return;
+        /*todo*/
         const recipient = /*event.source ??*/ window.parent;
         const origin = /*(event.origin === 'null' || !event.origin) ? "*" : event.origin */ "*";
         func(
@@ -107,62 +108,52 @@ var integrator = (function() {
             var iframe = document.getElementById(iframeId);
             this.removeIframe(iframe);
         },
-        addWebComponent: function(webComponent) {
-            webComponents.push(webComponent);
-            Object.assign(webComponent, {
-                sendMessage(message) {
-                    return new Promise((resolve, reject) => {
-                        const webComponent = this;
-                        const messageId = Math.random().toString(36).substring(7);
-                        
-                        function messageHandler(event) {
-                            if (event.detail.id === messageId) {
-                                webComponent.removeEventListener(`response.${messageId}`, messageHandler);
-                                resolve(event.detail.response);
+        /* This method should be called when you want to add web-components or iframes */
+        addElement: function(element) {
+            const elementTagName = element?.tagName?.toLowerCase();
+            const isIframe = elementTagName === 'iframe';
+            const isCustomElement = customElements.get(elementTagName) !== undefined;
+            if (!isIframe && !isCustomElement) {
+                return;
+            }
+
+            (isIframe ? iframes : webComponents).push(element);
+            element.call = element.call ?? {};
+            Object.keys(functions).map(item => 
+                Object.assign(element.call, {
+                    [item]: function(...args) {
+                        return new Promise((resolve, reject) => {
+                            const messageId = Math.random().toString(36).substring(7);
+                            const type = isIframe ? 'message' : `response.${messageId}`;
+                            const el = isIframe ? window : element;
+                            const getPayload = (event) => isIframe ? event.data : event.detail;
+                            
+                            function messageHandler(event) {
+                                if (isIframe && event.source !== element.contentWindow) return;
+                                if (getPayload(event).id === messageId) {
+                                    el.removeEventListener(type, messageHandler);
+                                    resolve(getPayload(event).response);
+                                }
                             }
-                        }
-
-                        webComponent.addEventListener(`response.${messageId}`, messageHandler);
-
-                        webComponent.dispatchEvent(new CustomEvent(`execute`, {
-                            detail: { id: messageId, payload: message },
-                        }));
-
-                        setTimeout(() => {
-                            webComponent.removeEventListener(`response.${messageId}`, messageHandler);
-                            reject(new Error("Timeout waiting for child response"));
-                        }, 5000);
-                    });
-                }
-            });
-        },
-        addIframe: function(iframe) {
-            iframes.push(iframe);
-            Object.assign(iframe, {
-                sendMessage(message) {
-                    return new Promise((resolve, reject) => {
-                        const iframe = this;
-                        const messageId = Math.random().toString(36).substring(7);
-                        
-                        function messageHandler(event) {
-                            if (event.source !== iframe.contentWindow) return;
-                            if (event.data.id === messageId) {
-                                window.removeEventListener("message", messageHandler);
-                                resolve(event.data.response);
+    
+                            el.addEventListener(type, messageHandler);
+    
+                            if (isIframe) {
+                                element.contentWindow.postMessage({ id: messageId, payload: { method: item, args: args } }, "*");
+                            } else {
+                                element.dispatchEvent(new CustomEvent(`execute`, {
+                                    detail: { id: messageId, payload: { method: item, args: args } },
+                                }));
                             }
-                        }
 
-                        window.addEventListener("message", messageHandler);
-
-                        iframe.contentWindow.postMessage({ id: messageId, payload: message }, "*");
-
-                        setTimeout(() => {
-                            window.removeEventListener("message", messageHandler);
-                            reject(new Error("Timeout waiting for child response"));
-                        }, 5000);
-                    });
-                }
-            });
+                            setTimeout(() => {
+                                el.removeEventListener(type, messageHandler);
+                                reject(new Error("Timeout waiting for child response"));
+                            }, 5000);
+                        });
+                    }
+                })
+            );
         },
         removeIframe: function (iframe) {
             if (iframe?.sendMessage) {
