@@ -65,7 +65,8 @@ class EmailBuilderJsComponent extends HTMLElement {
     const loaded = () => {
       if (onLoadedAttr) {
         const fn = new Function(onLoadedAttr);
-        fn();
+        const binded = fn.bind(this);
+        binded();
       }
       this.dispatchEvent(new CustomEvent('onLoaded', {
         detail: { message: 'EmailBuilderJs Component loaded' },

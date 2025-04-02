@@ -14,29 +14,32 @@
     }
   </style>
   <script>
-    const func = () => {
-      console.log('second loaded!');
+    const init = (element) => {
+      console.log('component loaded!', element);
+      window.integrator.addElement(element);
     };
+
+    const json = '{"root":{"type":"EmailLayout","data":{"backdropColor":"#F5F5F5","canvasColor":"#FFFFFF","textColor":"#262626","fontFamily":"MODERN_SANS","childrenIds":["block-1743436431560","block-1743436447693"]}},"block-1743436431560":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}},"block-1743436447693":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}}}';
   </script>
 </head>
 <body>
   <h1>Demo of EmailBuilder.js Web Component</h1>
 
-  <email-builder-js id="ee1" onLoaded="(() => { console.log('first loaded!') })()"></email-builder-js>
-  <email-builder-js id="ee2" onLoaded="func(this)"></email-builder-js>
+  <email-builder-js id="ee1" onLoaded="init(this)"></email-builder-js>
+  <button onclick="document.querySelector('#ee1').call.toggleInspector()">toggleInspector</button>
+  <button onclick="document.querySelector('#ee1').call.toggleSamples()">toggleSamples</button>
+  <button onclick="document.querySelector('#ee1').call.loadTemplate(json)">loadTemplate</button>
+  <email-builder-js id="ee2" onLoaded="init(this)"></email-builder-js>
+  <button onclick="document.querySelector('#ee2').call.toggleInspector()">toggleInspector</button>
+  <button onclick="document.querySelector('#ee2').call.toggleSamples()">toggleSamples</button>
+  <button onclick="document.querySelector('#ee2').call.loadTemplate(json)">loadTemplate</button>
 
   <script src="./email-builder-js-component.iife.js"></script>
-
   <script>
-    window.integrator.addElement(document.querySelector('#ee1'));
-    window.integrator.addElement(document.querySelector('#ee2'));
-    var json = '{"root":{"type":"EmailLayout","data":{"backdropColor":"#F5F5F5","canvasColor":"#FFFFFF","textColor":"#262626","fontFamily":"MODERN_SANS","childrenIds":["block-1743436431560","block-1743436447693"]}},"block-1743436431560":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}},"block-1743436447693":{"type":"Heading","data":{"props":{"text":"Hello friend"},"style":{"padding":{"top":16,"bottom":16,"right":24,"left":24}}}}}';
-    document.querySelector('#ee1').call.loadTemplate(json).then(e => console.log(e));
     document.querySelector('#ee1').addEventListener('watch.html', e => console.log('html', e.detail));
+    document.querySelector('#ee1').addEventListener('watch.json', e => console.log('json', e.detail));
+    document.querySelector('#ee2').addEventListener('watch.html', e => console.log('html', e.detail));
     document.querySelector('#ee2').addEventListener('watch.json', e => console.log('json', e.detail));
-    document.querySelector('#ee1').call.toggleInspector().then(e => console.log(e));
-    document.querySelector('#ee1').call.toggleSamples().then(e => console.log(e));
-    window.integrator.removeElement(document.querySelector('#ee2'));
   </script>
 </body>
 </html>

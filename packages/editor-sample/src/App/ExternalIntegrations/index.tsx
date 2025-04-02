@@ -34,61 +34,61 @@ export default function ExternalIntegrations({ element, onLoaded } : Props) {
     }, element);
   }, [document, shouldRunEffect]);
 
-  window.integrator.register(
-    { 
-      test: (args: Array<any>, success: Function, error: Function) => {
-        try {
-          const randomValue = Math.random();
-          const isSuccess = randomValue > 0.5;
-          if (!isSuccess) throw 'Something went wrong';
-          success(randomValue);
-        } catch (e) {
-          error(e); 
-        }
-      },
-      setWatcherEnabled: (args: Array<any>, success: Function, error: Function) => {
-        try {
-          setShouldRunEffect(args[0]);
-          success();
-        } catch (e) {
-          error(e); 
-        }
-      },
-      getHtml: (args: Array<any>, success: Function, error: Function) => {
-        try {
-          success(renderToStaticMarkup(documentRef.current, { rootBlockId: 'root' }));
-        } catch {
-          error('Something went wrong!'); 
-        }
-      },
-      getJson: (args: Array<any>, success: Function, error: Function) => {
-        try {
-          success(JSON.stringify(documentRef.current));
-        } catch (e) {
-          error('Something went wrong!'); 
-        }
-      },
-      toggleInspector: (args: Array<any>, success: Function, error: Function) => {
-        toggleInspectorDrawerOpen(store);
-        success();
-      },
-      toggleSamples: (args: Array<any>, success: Function, error: Function) => {
-        toggleSamplesDrawerOpen(store);
-        success();
-      },
-      loadTemplate: (args: Array<any>, success: Function, error: Function) => {
-        try {
-          const { error, data } = validateJsonStringValue(args[0]);
-          if (!data) throw error;
-          resetDocument(store, data);
-          success();
-        } catch (e) {
-          error(e); 
-        }
-      }
-  });
-
   useEffect(() => {
+    window.integrator.register(element,
+      { 
+        test: (args: Array<any>, success: Function, error: Function) => {
+          try {
+            const randomValue = Math.random();
+            const isSuccess = randomValue > 0.5;
+            if (!isSuccess) throw 'Something went wrong';
+            success(randomValue);
+          } catch (e) {
+            error(e); 
+          }
+        },
+        setWatcherEnabled: (args: Array<any>, success: Function, error: Function) => {
+          try {
+            setShouldRunEffect(args[0]);
+            success();
+          } catch (e) {
+            error(e); 
+          }
+        },
+        getHtml: (args: Array<any>, success: Function, error: Function) => {
+          try {
+            success(renderToStaticMarkup(documentRef.current, { rootBlockId: 'root' }));
+          } catch {
+            error('Something went wrong!'); 
+          }
+        },
+        getJson: (args: Array<any>, success: Function, error: Function) => {
+          try {
+            success(JSON.stringify(documentRef.current));
+          } catch (e) {
+            error('Something went wrong!'); 
+          }
+        },
+        toggleInspector: (args: Array<any>, success: Function, error: Function) => {
+          toggleInspectorDrawerOpen(store);
+          success();
+        },
+        toggleSamples: (args: Array<any>, success: Function, error: Function) => {
+          toggleSamplesDrawerOpen(store);
+          success();
+        },
+        loadTemplate: (args: Array<any>, success: Function, error: Function) => {
+          try {
+            const { error, data } = validateJsonStringValue(args[0]);
+            if (!data) throw error;
+            resetDocument(store, data);
+            success();
+          } catch (e) {
+            error(e); 
+          }
+        }
+    });
+
     const uninstall = window.integrator.install(element);
     if (onLoaded) {
       onLoaded();

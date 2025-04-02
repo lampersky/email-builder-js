@@ -4,10 +4,14 @@ var integrator = (function() {
     }
     var iframes = [];
     var webComponents = [];
-    var functions = {};
     
     const call = (name, messageId, args, element) => {
-        var func = functions[name];
+        if (!element) {
+            //todo: iframe...
+            console.log('unknown element');
+            return;
+        }
+        var func = element.functions[name];
         if (!func) return;
         /*todo*/
         const recipient = /*event.source ??*/ window.parent;
@@ -78,14 +82,15 @@ var integrator = (function() {
             });
         },
         /* This method should be called when you want to register method available on web-element or iframe. */
-        register: function(obj) {
+        register: function(element, obj) {
             if (obj != null && typeof obj === 'object' && Array.isArray(obj) === false) {
-                Object.assign(functions, obj);
+                element.functions = element.functions ?? {};
+                Object.assign(element.functions, obj);
             }
         },
-        unregister: function(name) {
-            if (functions[name]) {
-                delete functions[name];
+        unregister: function(element, name) {
+            if (element?.functions[name]) {
+                delete element?.functions[name];
             }
         },
         /* This method should be called when a variable changes inside the WebComponent or iframe, so we can notify the receivers. */
@@ -124,7 +129,7 @@ var integrator = (function() {
 
             (isIframe ? iframes : webComponents).push(element);
             element.call = element.call ?? {};
-            Object.keys(functions).map(item => 
+            Object.keys(element.functions).map(item => 
                 Object.assign(element.call, {
                     [item]: function(...args) {
                         return new Promise((resolve, reject) => {
@@ -135,6 +140,8 @@ var integrator = (function() {
                             
                             function messageHandler(event) {
                                 if (isIframe && event.source !== element.contentWindow) return;
+                                //console.log('event', event);
+                                //console.log('element', element);
                                 if (getPayload(event).id === messageId) {
                                     el.removeEventListener(type, messageHandler);
                                     resolve(getPayload(event).response);
@@ -175,10 +182,7 @@ var integrator = (function() {
         getIframes: function() {
             return iframes;
         },
-        getFunctions: function() {
-            return Object.keys(functions);
-        },
-        getWebComponent: function() {
+        getWebComponents: function() {
             return webComponents;
         },
     };
