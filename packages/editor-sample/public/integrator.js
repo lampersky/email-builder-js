@@ -77,8 +77,11 @@ var integrator = (function() {
                 }
             });
         },
-        register: function(name, callback) {
-            functions[name] = callback;
+        /* This method should be called when you want to register method available on web-element or iframe. */
+        register: function(obj) {
+            if (obj != null && typeof obj === 'object' && Array.isArray(obj) === false) {
+                Object.assign(functions, obj);
+            }
         },
         unregister: function(name) {
             if (functions[name]) {
@@ -90,6 +93,7 @@ var integrator = (function() {
             if (element) {
                 for (var [variableName, variableValue] of Object.entries(reactiveVariables))
                 {
+                    /* todo, check if element is registered */
                     element.dispatchEvent(new CustomEvent(`watch.${variableName}`, {
                         detail: variableValue,
                     }));
@@ -97,6 +101,7 @@ var integrator = (function() {
                 return;
             }
             if (window.parent) {
+                /* todo, check if iframe is registered */
                 window.parent.postMessage({ action: 'watch', reactiveVariables}, "*");
             }
         },
@@ -155,13 +160,16 @@ var integrator = (function() {
                 })
             );
         },
-        removeIframe: function (iframe) {
-            if (iframe?.sendMessage) {
-                delete iframe.sendMessage;
+        removeElement: function (element) {
+            if (element?.call) {
+                delete element.call;
             }
-            var idx = iframes.indexOf(iframe);
-            if (idx !== -1) {
-              iframes.splice(idx, 1);
+            for (var arr of [iframes, webComponents]) {
+                var idx = arr.indexOf(element);
+                if (idx !== -1) {
+                    arr.splice(idx, 1);
+                    return;
+                }
             }
         },
         getIframes: function() {

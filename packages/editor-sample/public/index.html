@@ -30,6 +30,7 @@
     document.querySelector('#ee2').addEventListener('watch.json', e => console.log('json', e.detail));
     document.querySelector('#ee1').call.toggleInspector().then(e => console.log(e));
     document.querySelector('#ee1').call.toggleSamples().then(e => console.log(e));
+    window.integrator.removeElement(document.querySelector('#ee2'));
   </script>
 </body>
 </html>
