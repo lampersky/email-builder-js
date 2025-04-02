@@ -6,9 +6,10 @@ import validateJsonStringValue from '../TemplatePanel/ImportJson/validateJsonStr
 
 type Props = {
   element: HTMLElement;
+  onLoaded?: () => void;
 };
 
-export default function ExternalIntegrations({ element } : Props) {
+export default function ExternalIntegrations({ element, onLoaded } : Props) {
   const store = useEditorStore();
   const document = useDocument(store);
 
@@ -89,6 +90,9 @@ export default function ExternalIntegrations({ element } : Props) {
 
   useEffect(() => {
     const uninstall = window.integrator.install(element);
+    if (onLoaded) {
+      onLoaded();
+    }
     return uninstall;
   }, []);
 

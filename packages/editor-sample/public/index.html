@@ -13,11 +13,17 @@
       padding: 0;
     }
   </style>
+  <script>
+    const func = () => {
+      console.log('second loaded!');
+    };
+  </script>
 </head>
 <body>
   <h1>Demo of EmailBuilder.js Web Component</h1>
-  <email-builder-js id="ee1"></email-builder-js>
-  <email-builder-js id="ee2"></email-builder-js>
+
+  <email-builder-js id="ee1" onLoaded="(() => { console.log('first loaded!') })()"></email-builder-js>
+  <email-builder-js id="ee2" onLoaded="func(this)"></email-builder-js>
 
   <script src="./email-builder-js-component.iife.js"></script>
 

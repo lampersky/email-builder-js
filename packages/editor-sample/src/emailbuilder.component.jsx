@@ -13,6 +13,9 @@ class EmailBuilderJsComponent extends HTMLElement {
   connectedCallback() {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
+    const onLoadedAttr = this.getAttribute('onLoaded');
+    console.log('onLoadedAttr', onLoadedAttr);
+
     this.shadowRoot.innerHTML = `
       <style>
         *,*::before,*::after{box-sizing:inherit;}
@@ -60,6 +63,13 @@ class EmailBuilderJsComponent extends HTMLElement {
       },
     });
 
+    const loaded = () => {
+      if (onLoadedAttr) {
+        const fn = new Function(onLoadedAttr);
+        fn();
+      }
+    };
+
     this.root = ReactDOM.createRoot(mountPoint);
     this.root.render(
       <React.StrictMode>
@@ -68,7 +78,7 @@ class EmailBuilderJsComponent extends HTMLElement {
             <CssBaseline />
             <Box sx={{ position: 'relative' }}>
               <EditorStateProvider initialConfig={getConfiguration('')}>
-                <ExternalIntegrations element={this}></ExternalIntegrations>
+                <ExternalIntegrations element={this} onLoaded={loaded}></ExternalIntegrations>
                 <App />
               </EditorStateProvider>
             </Box>
