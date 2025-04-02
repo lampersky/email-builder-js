@@ -67,6 +67,11 @@ class EmailBuilderJsComponent extends HTMLElement {
         const fn = new Function(onLoadedAttr);
         fn();
       }
+      this.dispatchEvent(new CustomEvent('onLoaded', {
+        detail: { message: 'EmailBuilderJs Component loaded' },
+        bubbles: true,
+        composed: true
+      }));
     };
 
     this.root = ReactDOM.createRoot(mountPoint);
