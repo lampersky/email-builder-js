@@ -14,7 +14,6 @@ class EmailBuilderJsComponent extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "open" });
 
     const onLoadedAttr = this.getAttribute('onLoaded');
-    console.log('onLoadedAttr', onLoadedAttr);
 
     this.shadowRoot.innerHTML = `
       <style>
