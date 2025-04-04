@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmailBuilder.js IFrame example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        iframe {
+            width: 80%;
+            height: 500px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <script src="./integrator.min.js"></script>
+</head>
+<body>
+    <h1>First EmailBuilder.js editor</h1>
+    <div style="width: 100%">
+        <div>
+            <button onclick="sendMessageToIframe('iframe1')">load json</button>
+            <button onclick="getJsonFromIframe('iframe1')">json</button>
+            <button onclick="getHtmlFromIframe('iframe1')">html</button>
+            <button onclick="toggleSamples('iframe1')">samples</button>
+            <button onclick="toggleInspector('iframe1')">inspector</button>
+        <div>
+        <iframe id="iframe1" src="./email-builder-js/" title="EmailBuilder.js" onload="init(this)"></iframe>
+    </div>
+    
+    <h1>Second EmailBuilder.js editor</h1>
+    <div style="width: 100%">
+        <div>
+            <button onclick="sendMessageToIframe('iframe2')">load json</button>
+            <button onclick="getJsonFromIframe('iframe2')">json</button>
+            <button onclick="getHtmlFromIframe('iframe2')">html</button>
+            <button onclick="toggleSamples('iframe2')">samples</button>
+            <button onclick="toggleInspector('iframe2')">inspector</button>
+        <div>
+        <iframe id="iframe2" src="./email-builder-js/" title="EmailBuilder.js" onload="init(this)"></iframe>
+    </div>
+    
+    <script>
+    
+        const jsonText = '{\n  "root": {\n    "type": "EmailLayout",\n    "data": {\n      "backdropColor": "#F2F5F7",\n      "canvasColor": "#FFFFFF",\n      "textColor": "#242424",\n      "fontFamily": "MODERN_SANS",\n      "childrenIds": [\n        "block-1709571212684",\n        "block-1709571228545",\n        "block-1709571234315",\n        "block-1709571247550",\n        "block-1709571258507",\n        "block-1709571281151",\n        "block-1709571302968",\n        "block-1709571282795"\n      ]\n    }\n  },\n  "block-1709571212684": {\n    "type": "Image",\n    "data": {\n      "style": {\n        "padding": {\n          "top": 24,\n          "bottom": 24,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "url": "https://d1iiu589g39o6c.cloudfront.net/live/platforms/platform_A9wwKSL6EV6orh6f/images/wptemplateimage_JTNBBPGrNs2Ph4JL/marketbase.png",\n        "alt": "Marketbase",\n        "linkHref": "https://marketbase.app",\n        "contentAlignment": "middle"\n      }\n    }\n  },\n  "block-1709571228545": {\n    "type": "Text",\n    "data": {\n      "style": {\n        "fontWeight": "normal",\n        "padding": {\n          "top": 0,\n          "bottom": 16,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "text": "Hi Anna 👋,"\n      }\n    }\n  },\n  "block-1709571234315": {\n    "type": "Text",\n    "data": {\n      "style": {\n        "fontWeight": "normal",\n        "padding": {\n          "top": 0,\n          "bottom": 16,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "text": "Welcome to Marketbase! Marketbase is how teams within fast growing marketplaces effortlessly monitor conversations to prevent disintermediation, identify problematic users, and increase trust & safety within their community."\n      }\n    }\n  },\n  "block-1709571247550": {\n    "type": "Text",\n    "data": {\n      "style": {\n        "fontWeight": "normal",\n        "padding": {\n          "top": 0,\n          "bottom": 16,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "text": "Best of all, you can connect your existing messaging services in minutes:"\n      }\n    }\n  },\n  "block-1709571258507": {\n    "type": "Image",\n    "data": {\n      "style": {\n        "padding": {\n          "top": 16,\n          "bottom": 16,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "url": "https://d1iiu589g39o6c.cloudfront.net/live/platforms/platform_A9wwKSL6EV6orh6f/images/wptemplateimage_oWB821TUkDXvr2f4/Screenshot%202023-11-22%20at%2011.51.30%20AM.png",\n        "alt": "Video thumbnail",\n        "linkHref": "https://capture.dropbox.com/NBQEmoCKKP9RGBWr",\n        "contentAlignment": "middle"\n      }\n    }\n  },\n  "block-1709571281151": {\n    "type": "Text",\n    "data": {\n      "style": {\n        "fontWeight": "normal",\n        "padding": {\n          "top": 16,\n          "bottom": 16,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "text": "If you ever need help, just reply to this email and one of us will get back to you shortly. We’re here to help."\n      }\n    }\n  },\n  "block-1709571282795": {\n    "type": "Image",\n    "data": {\n      "style": {\n        "padding": {\n          "top": 16,\n          "bottom": 40,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "url": "https://d1iiu589g39o6c.cloudfront.net/live/platforms/platform_A9wwKSL6EV6orh6f/images/wptemplateimage_cAK8FpmBEGoSRNi3/Screenshot%202023-11-22%20at%2011.48.53%20AM.png",\n        "alt": "Illustration",\n        "linkHref": null,\n        "contentAlignment": "middle"\n      }\n    }\n  },\n  "block-1709571302968": {\n    "type": "Button",\n    "data": {\n      "style": {\n        "fontSize": 14,\n        "padding": {\n          "top": 16,\n          "bottom": 24,\n          "right": 24,\n          "left": 24\n        }\n      },\n      "props": {\n        "buttonBackgroundColor": "#0079cc",\n        "buttonStyle": "rectangle",\n        "text": "Open dashboard",\n        "url": "https://www.usewaypoint.com"\n      }\n    }\n  }\n}';
+        const json = JSON.parse(jsonText);
+
+        function sendMessageToIframe(iframeId) {
+            document.getElementById(iframeId).call('loadTemplate', jsonText).then(response => {
+                console.log("Response from iframe:", response);
+            }).catch(err => console.error(err));
+        }
+        
+        function getJsonFromIframe(iframeId) {
+            document.getElementById(iframeId).call('getJson').then(response => {
+                console.log("Response from iframe:", response);
+            }).catch(err => console.error(err));
+        }
+        
+        function getHtmlFromIframe(iframeId) {
+            document.getElementById(iframeId).call('getHtml').then(response => {
+                console.log("Response from iframe:", response);
+            }).catch(err => console.error(err));
+        }
+        
+        function toggleSamples(iframeId) {
+            document.getElementById(iframeId).call('toggleSamples').then(response => {
+                console.log("Response from iframe:", response);
+            }).catch(err => console.error(err));
+        }
+        
+        function toggleInspector(iframeId) {
+            document.getElementById(iframeId).call('toggleInspector').then(response => {
+                console.log("Response from iframe:", response);
+            }).catch(err => console.error(err));
+        }
+        
+        function init(iframe) {
+            window.integrator.addElement(iframe);
+        }
+    
+    </script>
+    
+    
+    
+    
+    <script>       
+        window.integrator.installHostMessageRelay();
+    
+        document.getElementById('iframe1').addEventListener('watch.json', e => {
+            console.log('iframe1.json', e.detail);
+        });
+        document.getElementById('iframe1').addEventListener('watch.html', e => {
+            console.log('iframe1.html', e.detail);
+        });
+
+        document.getElementById('iframe2').addEventListener('watch.json', e => {
+            console.log('iframe2.json', e.detail);
+        });
+        document.getElementById('iframe2').addEventListener('watch.html', e => {
+            console.log('iframe2.html', e.detail);
+        });
+    </script>
+</body>
+</html>

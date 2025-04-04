@@ -5,7 +5,7 @@ type Callback = () => void | Destructor;
 
 interface Integrator {
   update: (obj: any, element: any) => void;
-  register: (element: HTMLElement, todo: {}) => void;
+  register: (element: HTMLElement | Window, todo: {}) => void;
   install: (element: any) => Callback;
 }
   

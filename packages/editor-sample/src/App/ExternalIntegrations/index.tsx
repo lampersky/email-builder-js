@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from '@usewaypoint/email-builder';
 import validateJsonStringValue from '../TemplatePanel/ImportJson/validateJsonStringValue';
 
 type Props = {
-  element: HTMLElement;
+  element: HTMLElement | Window;
   onLoaded?: () => void;
 };
 
