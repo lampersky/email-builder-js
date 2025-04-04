@@ -11,16 +11,12 @@ import ExternalIntegrations from './App/ExternalIntegrations';
 
 const externalIntegrationEnabled = true;
 
-const loaded = (t?:any) => {
-  console.log('loaded', t);
-};
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <EditorStateProvider initialConfig={getConfiguration(window.location.hash)}>
-        {externalIntegrationEnabled && <ExternalIntegrations element={window.parent} onLoaded={loaded}></ExternalIntegrations>}
+        {externalIntegrationEnabled && <ExternalIntegrations element={window.parent}></ExternalIntegrations>}
         <App />
       </EditorStateProvider>
     </ThemeProvider>
