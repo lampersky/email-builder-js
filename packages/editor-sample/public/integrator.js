@@ -10,8 +10,8 @@ var integrator = (function() {
         const isIframe = element === window.parent;
         /* if name is not provided, assume that first arg is method name */
         if (!name) {
-            name = args[0];
-            args = args.splice(1);
+            name = args?.[0];
+            args = args?.splice(1);
         }
         var func = isIframe ? functions[name] : element?.functions[name];
         if (!func) return;
