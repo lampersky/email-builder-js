@@ -39,9 +39,9 @@ var integrator = (function() {
                             id: messageId, 
                             response: { success: false, error: error, result: null }
                         }
-                    }))
+                    }));
                 } else {
-                    recipient.postMessage({ id: messageId, response: { success: true, error: null, result: result } }, origin);
+                    recipient.postMessage({ id: messageId, response: { success: false, error: error, result: null } }, origin);
                 }
             }
         );
@@ -58,12 +58,12 @@ var integrator = (function() {
                 } else {
                     call(event.data?.payload?.method, event.data.id, event.data?.payload?.args, element);
                 }
-              };
-              const el = inIframe ? window : element;
-              el.addEventListener(type, handleMessage);
-              return () => {
+            };
+            const el = inIframe ? window : element;
+            el.addEventListener(type, handleMessage);
+            return () => {
                 el.removeEventListener(type, handleMessage);
-              };
+            };
         },
         /* This method needs to be called on a page that is hosting the iframe. */
         installHostMessageRelay: function() {
@@ -97,8 +97,8 @@ var integrator = (function() {
             }
         },
         unregister: function(element, name) {
-            if (element?.functions[name]) {
-                delete element?.functions[name];
+            if (element?.functions?.[name]) {
+                delete element.functions[name];
             }
         },
         /* This method should be called when a variable changes inside the WebComponent or iframe, so we can notify the receivers. */
@@ -121,14 +121,19 @@ var integrator = (function() {
         },
         addIframeById: function(iframeId) {
             var iframe = document.getElementById(iframeId);
-            this.addIframe(iframe);
+            if (iframe) {
+                this.addElement(iframe);
+            }
         },
         removeIframeById: function(iframeId) {
             var iframe = document.getElementById(iframeId);
-            this.removeIframe(iframe);
+            if (iframe) {
+                this.removeElement(iframe);
+            }
         },
         /* This method should be called when you want to add web-components or iframes */
         addElement: function(element) {
+            if (!element) return;
             const elementTagName = element?.tagName?.toLowerCase();
             const isIframe = elementTagName === 'iframe';
             const isCustomElement = customElements.get(elementTagName) !== undefined;
@@ -172,10 +177,10 @@ var integrator = (function() {
                 });
             };
 
-            element.call = element.call ?? f();
+            element.call = element.call ?? f(null);
 
             if (element.functions) {
-                Object.keys(element.functions).map(item => 
+                Object.keys(element.functions).forEach(item => 
                     Object.assign(element.call, {
                         [item]: f(item)
                     })
