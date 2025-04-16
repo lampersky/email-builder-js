@@ -5,7 +5,7 @@ import {
   VerticalAlignCenterOutlined,
   VerticalAlignTopOutlined,
 } from '@mui/icons-material';
-import { Stack, ToggleButton } from '@mui/material';
+import { Box, Button, Card, CardMedia, Grid, Modal, Stack, ToggleButton, Typography } from '@mui/material';
 import { ImageProps, ImagePropsSchema } from '@usewaypoint/block-image';
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
@@ -18,6 +18,34 @@ type ImageSidebarPanelProps = {
   data: ImageProps;
   setData: (v: ImageProps) => void;
 };
+
+const imageList = [
+  'https://picsum.photos/id/1018/1280/930',
+  'https://picsum.photos/id/1019/1280/930',
+  'https://picsum.photos/id/1020/1280/930',
+  'https://picsum.photos/id/1021/1280/930',
+  'https://picsum.photos/id/1022/1280/930',
+  'https://picsum.photos/id/1023/1280/930',
+  'https://picsum.photos/id/1024/1280/930',
+  'https://picsum.photos/id/1025/1280/930',
+  'https://picsum.photos/id/1026/1280/930',
+  'https://picsum.photos/id/1027/1280/930',
+  'https://picsum.photos/id/1028/1280/930',
+  'https://picsum.photos/id/1029/1280/930',
+];
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  borderRadius: 2,
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelProps) {
   const [, setErrors] = useState<Zod.ZodError | null>(null);
 
@@ -31,6 +59,16 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
     }
   };
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleImageSelect = (url: string) => {
+    updateData({ ...data, props: { ...data.props, url } });
+    handleClose();
+  };
+
   return (
     <BaseSidebarPanel title="Image block">
       <TextInput
@@ -41,6 +79,27 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
           updateData({ ...data, props: { ...data.props, url } });
         }}
       />
+
+      <Button variant="contained" onClick={handleOpen}>
+        Open gallery
+      </Button>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={modalStyle}>
+          <Typography variant="h6" gutterBottom>
+            Choose an Image
+          </Typography>
+          <Grid container spacing={2}>
+            {imageList.map((url) => (
+              <Grid item xs={4} key={url}>
+                <Card onClick={() => handleImageSelect(url)} sx={{ cursor: 'pointer' }}>
+                  <CardMedia component="img" image={url} alt="Image option" />
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Modal>
 
       <TextInput
         label="Alt text"
